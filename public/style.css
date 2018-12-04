@@ -1,0 +1,32 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    width: 100vw;
+}
+
+weather-tile section {
+    display: flex;
+    align-items: center;
+}
+
+.list {
+    display: flex;
+    margin-top: 100px;
+    
+}
+
+.list weather-tile section {
+    flex-direction: column-reverse;
+    justify-content: center;
+}
+
+.list h1 {
+    font-size: 1rem;
+    text-align: center;
+}
+
+.list h3 {
+    font-size: .8rem;
+    font-weight: normal;
+    width: 80%;
+}
+
