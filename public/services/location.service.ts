@@ -11,5 +11,6 @@ class LocationService {
     }
 }
 
-angular.module('app')
-    .service('LocationService', LocationService);
+LocationService.$inject = ['$window'];
+
+export default LocationService;

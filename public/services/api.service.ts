@@ -16,7 +16,7 @@ class ApiService {
     }
 }
 
+ApiService.$inject = ['$http', 'LocationService'];
 
-angular
-    .module('app')
-    .service('ApiService', ApiService);
+
+export default ApiService;

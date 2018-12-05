@@ -7,18 +7,27 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server",
     "dev": "npm run watch & npm start",
-    "build": "browserify files-to-load.js -p [ tsify --noImplicitAny ] > public/main.bundle.js",
-    "watch": "watchify files-to-load.js -p [ tsify --noImplicitAny ] -o public/main.bundle.js"
+    "build": "browserify public/main.ts -p [ tsify --noImplicitAny ] > public/main.bundle.js",
+    "watch": "watchify public/main.ts -p [ tsify --noImplicitAny ] -o public/main.bundle.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@angular/common": "^7.1.1",
+    "@angular/compiler": "^7.1.1",
+    "@angular/core": "^7.1.1",
+    "@angular/platform-browser": "^7.1.1",
+    "@angular/platform-browser-dynamic": "^7.1.1",
+    "@angular/upgrade": "^7.1.1",
     "angular": "^1.7.5",
     "axios": "^0.18.0",
     "browserify": "^16.2.3",
     "express": "^4.16.4",
     "nodemon": "^1.18.7",
-    "watchify": "^3.11.0"
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.3.3",
+    "watchify": "^3.11.0",
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@types/angular": "^1.6.51",
@@ -26,5 +35,8 @@
     "source-map-loader": "^0.2.4",
     "tsify": "^4.0.1",
     "typescript": "^3.2.1"
+  },
+  "browser": {
+    "@angular/upgrade/static": "@angular/upgrade/bundles/upgrade-static.umd.js"
   }
 }

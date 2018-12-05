@@ -7,5 +7,6 @@ class SkyconsService {
     public skycons = new this.$window.Skycons({ color: "grey" });
 }
 
-angular.module('app')
-    .service('SkyconsService', SkyconsService);
+SkyconsService.$inject = ['$window'];
+
+export default SkyconsService;

@@ -2,28 +2,31 @@
 
 import * as angular from 'angular';
 
+class Controller {
+    constructor(private ApiService: any, private SkyconsService: any, private $timeout: angular.ITimeoutService) { }
+    current: any
+    daily: any
 
-angular
-    .module('app')
-    .component('app', {
-        controller(ApiService, SkyconsService, $timeout) {
-            const $ctrl = this;
-            $ctrl.$onInit = function () {
-                SkyconsService.skycons.play();
-                ApiService.getWeather().then((result: any) => {
-                    $timeout(() => {
-                        $ctrl.current = result.data.currently;
-                        const { temperatureHigh, temperatureLow } = result.data.daily.data[0];
-                        Object.assign($ctrl, { temperatureHigh, temperatureLow });
-                        $ctrl.daily = result.data.daily.data.slice(1);
-                    });
+    $onInit() {
+        this.SkyconsService.skycons.play();
+        this.ApiService.getWeather().then((result: any) => {
+            this.$timeout(() => {
+                this.current = result.data.currently;
+                const { temperatureHigh, temperatureLow } = result.data.daily.data[0];
+                Object.assign(this, { temperatureHigh, temperatureLow });
+                this.daily = result.data.daily.data.slice(1);
+            });
 
-                });
-            }
+        });
+    }
 
+}
 
-        },
-        template: `<div>
+Controller.$inject = ['ApiService', 'SkyconsService', '$timeout'];
+
+const App = {
+    controller: Controller,
+    template: `<div>
                         <weather-tile
                             summary="$ctrl.current.summary" 
                             icon="$ctrl.current.icon" 
@@ -45,4 +48,6 @@ angular
                             </weather-tile>
                         </section>
                     </div>`
-    })
+};
+
+export default App;
