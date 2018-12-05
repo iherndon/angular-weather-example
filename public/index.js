@@ -1,5 +1,5 @@
 "use strict";
 
-{
-    angular.module('app', []);
-}
+const angular = require('angular');
+    
+angular.module('app', []);
