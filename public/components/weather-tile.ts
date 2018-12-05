@@ -1,46 +1,40 @@
 "use strict";
+import { Component, Input, OnInit, OnChanges } from '@angular/core';
+import SkyconsService from '../services/skycons.service';
+@Component({
+    selector: 'weather-tile',
+    template: `<section *ngIf="summary">
+                    <div>
+                        <h3>{{time * 1000 | date: 'EEE MMM d' }}</h3>
+                        <h1 *ngIf="temperature">{{temperature}} &#176;F</h1>
+                        <h3>{{temperatureHigh}} &#176;F/{{temperatureLow}}&#176;F</h3>
+                        <h3>{{summary}}</h3> 
+                    </div>
+                    <canvas id="{{time}}" [height]="small ? 100: 300" [width]="small ? 100: 300"></canvas>
+                </section>`
+})
 
-import * as angular from 'angular';
+export class WeatherTile implements OnInit, OnChanges {
+    @Input() time: number;
+    @Input() icon: string;
+    @Input() temperature: number;
+    @Input() temperatureHigh: number;
+    @Input() temperatureLow: number;
+    @Input() small: boolean;
+    @Input() summary: string;
+    @Input() feelsLike: number;
+    constructor(private skycons: SkyconsService) { }
 
-class Controller {
-    constructor(private SkyconsService: any, private $timeout: angular.ITimeoutService) { }
-    time: number
-    icon: string
 
-    $onInit() {
-        this.$timeout(() => {
-            if (this.time && this.icon) this.SkyconsService.skycons.add(this.time && this.time.toString() || '', this.icon);
-        })
+    ngOnInit() {
+        setTimeout(() => {
+            if (this.time && this.icon) this.skycons.skycons.add(this.time && this.time.toString() || '', this.icon)
+        });
     }
 
-    $onChanges() {
-        if (this.time && this.icon) this.SkyconsService.skycons.set(this.time && this.time.toString() || '', this.icon);
+    ngOnChanges() {
+        setTimeout(() => {
+            if (this.time && this.icon) this.skycons.skycons.set(this.time && this.time.toString() || '', this.icon)
+        });
     }
 }
-
-Controller.$inject = ['SkyconsService', '$timeout'];
-
-const WeatherTile = {
-    bindings: {
-        temperature: '<',
-        feelsLike: '<',
-        icon: '<',
-        summary: '<',
-        time: '<',
-        temperatureHigh: '<',
-        temperatureLow: '<',
-        small: '@'
-    },
-    controller: Controller,
-    template: `<section ng-if="$ctrl.summary">
-                    <div>
-                        <h3>{{$ctrl.time * 1000 | date: 'EEE MMM d' }}</h3>
-                        <h1 ng-if="$ctrl.temperature">{{$ctrl.temperature}} &#176;F</h1>
-                        <h3>{{$ctrl.temperatureHigh}} &#176;F/{{$ctrl.temperatureLow}}&#176;F</h3>
-                        <h3>{{$ctrl.summary}}</h3> 
-                    </div>
-                    <canvas id="{{$ctrl.time}}" height="{{$ctrl.small && '100px'}}" width="{{$ctrl.small && '100px'}}"></canvas>
-                </section>`,
-};
-
-export default WeatherTile;

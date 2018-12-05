@@ -1,22 +1,22 @@
 "use strict";
 
-import * as angular from 'angular';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import LocationService from './location.service';
 
 
+@Injectable()
 class ApiService {
-    constructor(private $http: angular.IHttpService, private LocationService: any) { }
+    constructor(private http: HttpClient, private location: LocationService) { }
 
     private baseUrl = 'https://api.darksky.net/forecast/API_SECRET_KEY/';
 
     private exclude = '?exclude=minutely,hourly,alerts';
 
     public getWeather() {
-        return this.LocationService.getCurrentPosition()
-            .then(({ latitude, longitude }: any) => this.$http.get(`/proxy/${this.baseUrl}${latitude},${longitude}${this.exclude}`));
+        return this.location.getCurrentPosition()
+            .then(({ latitude, longitude }: any) => this.http.get(`/proxy/${this.baseUrl}${latitude},${longitude}${this.exclude}`));
     }
 }
-
-ApiService.$inject = ['$http', 'LocationService'];
-
 
 export default ApiService;

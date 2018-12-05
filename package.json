@@ -18,8 +18,6 @@
     "@angular/core": "^7.1.1",
     "@angular/platform-browser": "^7.1.1",
     "@angular/platform-browser-dynamic": "^7.1.1",
-    "@angular/upgrade": "^7.1.1",
-    "angular": "^1.7.5",
     "axios": "^0.18.0",
     "browserify": "^16.2.3",
     "express": "^4.16.4",
@@ -30,13 +28,9 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
-    "@types/angular": "^1.6.51",
     "awesome-typescript-loader": "^5.2.1",
     "source-map-loader": "^0.2.4",
     "tsify": "^4.0.1",
     "typescript": "^3.2.1"
-  },
-  "browser": {
-    "@angular/upgrade/static": "@angular/upgrade/bundles/upgrade-static.umd.js"
   }
 }

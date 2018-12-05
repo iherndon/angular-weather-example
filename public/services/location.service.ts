@@ -1,16 +1,14 @@
 "use strict";
 
-import * as angular from 'angular';
+import { Injectable } from '@angular/core';
 
-
+@Injectable()
 class LocationService {
-    constructor(private $window: angular.IWindowService) { }
+    constructor() { }
 
     public getCurrentPosition() {
-        return new Promise(resolve => this.$window.navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => resolve({ latitude, longitude })));
+        return new Promise(resolve => window.navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => resolve({ latitude, longitude })));
     }
 }
-
-LocationService.$inject = ['$window'];
 
 export default LocationService;

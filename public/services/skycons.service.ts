@@ -1,12 +1,13 @@
 "use strict";
-import * as angular from 'angular';
-
-class SkyconsService {
-    constructor(private $window: angular.IWindowService) { }
-
-    public skycons = new this.$window.Skycons({ color: "grey" });
+import { Injectable } from '@angular/core';
+declare global {
+    interface Window { Skycons: any }
 }
+@Injectable()
+class SkyconsService {
+    constructor() { }
 
-SkyconsService.$inject = ['$window'];
+    public skycons = new window.Skycons({ color: "grey" });
+}
 
 export default SkyconsService;
