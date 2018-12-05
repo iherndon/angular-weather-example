@@ -1,6 +1,7 @@
 "use strict";
 
-const angular = require('angular');
+import * as angular from 'angular';
+
 
 angular.module('app')
     .component('weatherTile', {
@@ -14,19 +15,19 @@ angular.module('app')
             temperatureLow: '<',
             small: '@'
         },
-        controller (SkyconsService, $timeout) {
+        controller(SkyconsService, $timeout) {
             const $ctrl = this;
-            $ctrl.$onInit = function(){
+            $ctrl.$onInit = function () {
                 $timeout(() => {
                     if ($ctrl.time && $ctrl.icon) SkyconsService.skycons.add($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
                 })
             }
 
-            $ctrl.$onChanges = function(changes) {
+            $ctrl.$onChanges = function () {
                 if ($ctrl.time && $ctrl.icon) SkyconsService.skycons.set($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
             }
         },
-        template:  `<section ng-if="$ctrl.summary">
+        template: `<section ng-if="$ctrl.summary">
                         <div>
                             <h3>{{$ctrl.time * 1000 | date: 'EEE MMM d' }}</h3>
                             <h1 ng-if="$ctrl.temperature">{{$ctrl.temperature}} &#176;F</h1>

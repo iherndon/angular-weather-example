@@ -1,26 +1,27 @@
 "use strict";
 
-const angular = require('angular');
+import * as angular from 'angular';
+
 
 angular
     .module('app')
     .component('app', {
-        controller (ApiService, SkyconsService, $timeout) {
+        controller(ApiService, SkyconsService, $timeout) {
             const $ctrl = this;
-            $ctrl.$onInit = function() {
+            $ctrl.$onInit = function () {
                 SkyconsService.skycons.play();
-                ApiService.getWeather().then(result => {
+                ApiService.getWeather().then((result: any) => {
                     $timeout(() => {
                         $ctrl.current = result.data.currently;
                         const { temperatureHigh, temperatureLow } = result.data.daily.data[0];
                         Object.assign($ctrl, { temperatureHigh, temperatureLow });
                         $ctrl.daily = result.data.daily.data.slice(1);
                     });
-                    
+
                 });
             }
-            
-            
+
+
         },
         template: `<div>
                         <weather-tile
@@ -44,4 +45,4 @@ angular
                             </weather-tile>
                         </section>
                     </div>`
-})
+    })

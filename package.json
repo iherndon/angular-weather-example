@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run watch & nodemon server",
-    "build": "browserify files-to-load.js > public/main.bundle.js",
-    "watch": "watchify files-to-load.js -o public/main.bundle.js"
+    "start": "nodemon server",
+    "dev": "npm run watch & npm start",
+    "build": "browserify files-to-load.js -p [ tsify --noImplicitAny ] > public/main.bundle.js",
+    "watch": "watchify files-to-load.js -p [ tsify --noImplicitAny ] -o public/main.bundle.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,5 +19,12 @@
     "express": "^4.16.4",
     "nodemon": "^1.18.7",
     "watchify": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/angular": "^1.6.51",
+    "awesome-typescript-loader": "^5.2.1",
+    "source-map-loader": "^0.2.4",
+    "tsify": "^4.0.1",
+    "typescript": "^3.2.1"
   }
 }

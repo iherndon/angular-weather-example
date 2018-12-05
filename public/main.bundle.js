@@ -36233,30 +36233,26 @@ module.exports = angular;
 
 },{"./angular":2}],4:[function(require,module,exports){
 "use strict";
-
-const angular = require('angular');
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const angular = require("angular");
 angular
     .module('app')
     .component('app', {
-        controller (ApiService, SkyconsService, $timeout) {
-            const $ctrl = this;
-            $ctrl.$onInit = function() {
-                SkyconsService.skycons.play();
-                ApiService.getWeather().then(result => {
-                    $timeout(() => {
-                        $ctrl.current = result.data.currently;
-                        const { temperatureHigh, temperatureLow } = result.data.daily.data[0];
-                        Object.assign($ctrl, { temperatureHigh, temperatureLow });
-                        $ctrl.daily = result.data.daily.data.slice(1);
-                    });
-                    
+    controller(ApiService, SkyconsService, $timeout) {
+        const $ctrl = this;
+        $ctrl.$onInit = function () {
+            SkyconsService.skycons.play();
+            ApiService.getWeather().then((result) => {
+                $timeout(() => {
+                    $ctrl.current = result.data.currently;
+                    const { temperatureHigh, temperatureLow } = result.data.daily.data[0];
+                    Object.assign($ctrl, { temperatureHigh, temperatureLow });
+                    $ctrl.daily = result.data.daily.data.slice(1);
                 });
-            }
-            
-            
-        },
-        template: `<div>
+            });
+        };
+    },
+    template: `<div>
                         <weather-tile
                             summary="$ctrl.current.summary" 
                             icon="$ctrl.current.icon" 
@@ -36278,37 +36274,38 @@ angular
                             </weather-tile>
                         </section>
                     </div>`
-})
+});
+
 },{"angular":3}],5:[function(require,module,exports){
 "use strict";
-
-const angular = require('angular');
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const angular = require("angular");
 angular.module('app')
     .component('weatherTile', {
-        bindings: {
-            temperature: '<',
-            feelsLike: '<',
-            icon: '<',
-            summary: '<',
-            time: '<',
-            temperatureHigh: '<',
-            temperatureLow: '<',
-            small: '@'
-        },
-        controller (SkyconsService, $timeout) {
-            const $ctrl = this;
-            $ctrl.$onInit = function(){
-                $timeout(() => {
-                    if ($ctrl.time && $ctrl.icon) SkyconsService.skycons.add($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
-                })
-            }
-
-            $ctrl.$onChanges = function(changes) {
-                if ($ctrl.time && $ctrl.icon) SkyconsService.skycons.set($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
-            }
-        },
-        template:  `<section ng-if="$ctrl.summary">
+    bindings: {
+        temperature: '<',
+        feelsLike: '<',
+        icon: '<',
+        summary: '<',
+        time: '<',
+        temperatureHigh: '<',
+        temperatureLow: '<',
+        small: '@'
+    },
+    controller(SkyconsService, $timeout) {
+        const $ctrl = this;
+        $ctrl.$onInit = function () {
+            $timeout(() => {
+                if ($ctrl.time && $ctrl.icon)
+                    SkyconsService.skycons.add($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
+            });
+        };
+        $ctrl.$onChanges = function () {
+            if ($ctrl.time && $ctrl.icon)
+                SkyconsService.skycons.set($ctrl.time && $ctrl.time.toString() || '', $ctrl.icon);
+        };
+    },
+    template: `<section ng-if="$ctrl.summary">
                         <div>
                             <h3>{{$ctrl.time * 1000 | date: 'EEE MMM d' }}</h3>
                             <h1 ng-if="$ctrl.temperature">{{$ctrl.temperature}} &#176;F</h1>
@@ -36317,7 +36314,8 @@ angular.module('app')
                         </div>
                         <canvas id="{{$ctrl.time}}" height="{{$ctrl.small && '100px'}}" width="{{$ctrl.small && '100px'}}"></canvas>
                     </section>`,
-    });
+});
+
 },{"angular":3}],6:[function(require,module,exports){
 "use strict";
 
@@ -36326,41 +36324,50 @@ const angular = require('angular');
 angular.module('app', []);
 },{"angular":3}],7:[function(require,module,exports){
 "use strict";
-
-const angular = require('angular');
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const angular = require("angular");
+class ApiService {
+    constructor($http, LocationService) {
+        this.$http = $http;
+        this.LocationService = LocationService;
+        this.baseUrl = 'https://api.darksky.net/forecast/API_SECRET_KEY/';
+        this.exclude = '?exclude=minutely,hourly,alerts';
+    }
+    getWeather() {
+        return this.LocationService.getCurrentPosition()
+            .then(({ latitude, longitude }) => this.$http.get(`/proxy/${this.baseUrl}${latitude},${longitude}${this.exclude}`));
+    }
+}
 angular
     .module('app')
-    .service('ApiService', function($http, LocationService){
-        const baseUrl = 'https://api.darksky.net/forecast/API_SECRET_KEY/';
-        const exclude = '?exclude=minutely,hourly,alerts';
+    .service('ApiService', ApiService);
 
-        const service = {
-            getWeather() {
-                return LocationService.getCurrentPosition()
-                    .then(({latitude, longitude}) => $http.get(`/proxy/${baseUrl}${latitude},${longitude}${exclude}`));
-            },
-        };
-
-        Object.assign(this, service);
-    });
 },{"angular":3}],8:[function(require,module,exports){
 "use strict";
-
-const angular = require('angular');
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const angular = require("angular");
+class LocationService {
+    constructor($window) {
+        this.$window = $window;
+    }
+    getCurrentPosition() {
+        return new Promise(resolve => this.$window.navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => resolve({ latitude, longitude })));
+    }
+}
 angular.module('app')
-    .service('LocationService', function($window){
-        this.getCurrentPosition = () => 
-        new Promise((resolve) => $window.navigator.geolocation.getCurrentPosition(({coords: { latitude, longitude }}) => resolve({ latitude, longitude })));
-        
-    });
+    .service('LocationService', LocationService);
+
 },{"angular":3}],9:[function(require,module,exports){
 "use strict";
-const angular = require('angular');
+Object.defineProperty(exports, "__esModule", { value: true });
+const angular = require("angular");
+class SkyconsService {
+    constructor($window) {
+        this.$window = $window;
+        this.skycons = new this.$window.Skycons({ color: "grey" });
+    }
+}
 angular.module('app')
-    .service('SkyconsService', function($window){
-        this.skycons = new $window.Skycons({color: "grey"});
-        console.log(this.skycons.add);
-    });
+    .service('SkyconsService', SkyconsService);
+
 },{"angular":3}]},{},[1]);
